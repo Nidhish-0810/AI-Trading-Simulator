@@ -1,0 +1,57 @@
+services:
+  - type: web
+    name: tradeai-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    region: oregon
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "7"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tradeai-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: tradeai-redis
+          type: redis
+          property: connectionString
+      - key: CORS_ORIGINS
+        value: "https://tradeai-frontend.onrender.com,http://localhost:3000"
+      - key: STARTING_BALANCE
+        value: "100000.0"
+      - key: COMMISSION_RATE
+        value: "0.001"
+
+  - type: web
+    name: tradeai-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    region: oregon
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        value: https://tradeai-backend.onrender.com
+      - key: VITE_WS_URL
+        value: wss://tradeai-backend.onrender.com
+
+databases:
+  - name: tradeai-postgres
+    plan: free
+    region: oregon
+    databaseName: tradeai_db
+    user: tradeai
