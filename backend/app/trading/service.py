@@ -11,7 +11,7 @@ import redis.asyncio as aioredis
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.trading.models import Order, OrderStatus, Trade
+from app.trading.models import Order, Trade
 from app.trading.order_engine import order_engine
 from app.trading.schemas import CreateOrder
 
@@ -122,15 +122,14 @@ async def get_virtual_order_book(
 
     The book reflects orders placed by all users in the simulator.
     """
-    from app.trading.models import OrderSide, OrderType
     from app.trading.schemas import OrderBook, OrderBookEntry
     from collections import defaultdict
 
     result = await db.execute(
         select(Order).where(
             Order.symbol == symbol.upper(),
-            Order.status == OrderStatus.PENDING,
-            Order.order_type == OrderType.LIMIT,
+            Order.status == "pending",
+            Order.order_type == "limit",
         )
     )
     pending_orders = result.scalars().all()
@@ -141,7 +140,7 @@ async def get_virtual_order_book(
     for order in pending_orders:
         price = round(float(order.price), 2)
         remaining = float(order.quantity) - float(order.filled_quantity)
-        if order.side == OrderSide.BUY:
+        if order.side == "buy":
             buy_levels[price]["qty"] += remaining
             buy_levels[price]["count"] += 1
         else:

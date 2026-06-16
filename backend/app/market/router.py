@@ -29,7 +29,7 @@ from app.trading.models import WatchlistItem
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/market", tags=["Market Data"])
+router = APIRouter(tags=["Market Data"])
 
 # Valid symbol pattern: 1-10 uppercase alphanumeric + hyphen
 _SYMBOL_RE = re.compile(r"^[A-Z0-9\-\^\.]{1,10}$")

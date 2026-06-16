@@ -57,7 +57,7 @@ services:
       REFRESH_TOKEN_EXPIRE_DAYS: 7
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-tradeai}:${POSTGRES_PASSWORD:-tradeai_secret_2024}@postgres:5432/${POSTGRES_DB:-tradeai_db}
       REDIS_URL: redis://:${REDIS_PASSWORD:-redis_secret_2024}@redis:6379/0
-      CORS_ORIGINS: "http://localhost:3000,http://localhost:80,http://localhost"
+      CORS_ORIGINS: '["http://localhost:3000","http://localhost:80","http://localhost"]'
       STARTING_BALANCE: "100000.0"
       COMMISSION_RATE: "0.001"
     ports:

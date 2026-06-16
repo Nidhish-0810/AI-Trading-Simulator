@@ -153,7 +153,7 @@ async def get_user_stats(
     buy_result = await db.execute(
         select(func.sum(Transaction.total_amount)).where(
             Transaction.user_id == user.id,
-            Transaction.transaction_type == "buy",
+            Transaction.type == "buy",
         )
     )
     total_invested = float(buy_result.scalar() or 0)

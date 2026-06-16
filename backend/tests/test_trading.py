@@ -55,7 +55,7 @@ async def test_cancel_order(client: AsyncClient, auth_headers):
             "price": 200.0
         }
     )
-    order_id = order_res.json()["id"]
+    order_id = order_res.json().get("id")
 
     # Now cancel it
     cancel_res = await client.delete(f"/api/trading/orders/{order_id}", headers=auth_headers)

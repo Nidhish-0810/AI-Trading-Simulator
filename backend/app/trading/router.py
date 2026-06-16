@@ -24,7 +24,7 @@ from app.trading.schemas import CreateOrder, OrderBook, OrderResponse, TradeResp
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/trading", tags=["Trading"])
+router = APIRouter(tags=["Trading"])
 
 
 @router.post(

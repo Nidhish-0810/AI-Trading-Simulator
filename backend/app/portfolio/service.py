@@ -154,7 +154,7 @@ async def get_portfolio_history(
 ) -> List[Dict[str, Any]]:
     """Return daily portfolio value history."""
     cache_key = f"portfolio:history:{user_id}"
-    cached = await get_cache(cache_key)
+    cached = await get_cache(redis, cache_key)
     if cached:
         return cached
 

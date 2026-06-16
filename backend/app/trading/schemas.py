@@ -80,7 +80,6 @@ class OrderResponse(BaseModel):
     status: str
     created_at: datetime
     updated_at: datetime
-    trades: List[TradeResponse] = []
 
 
 class OrderBookEntry(BaseModel):

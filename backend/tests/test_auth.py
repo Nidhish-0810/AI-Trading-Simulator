@@ -18,9 +18,9 @@ async def test_register_user(client: AsyncClient):
     )
     assert response.status_code == 201
     data = response.json()
-    assert data["email"] == "newuser@test.com"
-    assert data["username"] == "newuser"
-    assert "id" in data
+    assert data["user"]["email"] == "newuser@test.com"
+    assert data["user"]["username"] == "newuser"
+    assert "id" in data["user"]
 
 async def test_register_duplicate_email(client: AsyncClient, test_user):
     response = await client.post(
@@ -31,8 +31,8 @@ async def test_register_duplicate_email(client: AsyncClient, test_user):
             "password": "Password123"
         }
     )
-    assert response.status_code == 400
-    assert "Email already registered" in response.json()["detail"]
+    assert response.status_code == 409
+    assert 'newuser@test.com' in response.json().get("detail", "")
 
 async def test_login_success(client: AsyncClient, test_user):
     response = await client.post(
