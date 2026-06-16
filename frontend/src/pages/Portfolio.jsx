@@ -49,6 +49,7 @@ export default function Portfolio() {
         <p className="text-gray-500 text-sm">Your complete investment overview</p>
       </div>
 
+      {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {isLoading ? (
           Array.from({length: 5}).map((_,i) => <Skeleton key={i} className="h-24 rounded-2xl" />)
@@ -63,6 +64,7 @@ export default function Portfolio() {
         )}
       </div>
 
+      {/* Charts Row */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
           <h2 className="text-lg font-bold text-white mb-4">Portfolio History</h2>
@@ -76,6 +78,7 @@ export default function Portfolio() {
         </div>
       </div>
 
+      {/* Holdings Table */}
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
         <h2 className="text-lg font-bold text-white mb-4">Holdings</h2>
         {isLoading
@@ -84,6 +87,7 @@ export default function Portfolio() {
         }
       </div>
 
+      {/* Transaction History */}
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
         <h2 className="text-lg font-bold text-white mb-4">Transaction History</h2>
         <TransactionHistory transactions={transactions?.transactions || []} />

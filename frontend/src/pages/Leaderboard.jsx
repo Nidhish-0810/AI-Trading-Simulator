@@ -5,7 +5,6 @@ import { portfolioService } from '../services/portfolio.service';
 import { formatPrice, formatPercent, getChangeColor } from '../utils/format';
 import { useAuthStore } from '../store/authStore';
 import { Skeleton } from '../components/ui/Skeleton';
-import React from 'react';
 
 const RANK_STYLES = {
   1: { icon: Crown, color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/30' },
@@ -54,6 +53,7 @@ export default function Leaderboard() {
         <p className="text-gray-500 text-sm">Top traders ranked by portfolio return</p>
       </div>
 
+      {/* Tabs */}
       <div className="flex gap-2">
         {['leaderboard', 'achievements'].map(t => (
           <button key={t} onClick={() => setTab(t)}
@@ -67,6 +67,7 @@ export default function Leaderboard() {
 
       {tab === 'leaderboard' && (
         <>
+          {/* Top 3 podium */}
           {!lbLoading && leaders.length >= 3 && (
             <div className="grid grid-cols-3 gap-4">
               {[leaders[1], leaders[0], leaders[2]].map((trader, podiumPos) => {
@@ -92,6 +93,7 @@ export default function Leaderboard() {
             </div>
           )}
 
+          {/* Full Table */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden">
             <div className="grid grid-cols-[48px_1fr_120px_120px_80px] gap-x-4 px-5 py-3 border-b border-white/10 text-xs text-gray-500 font-medium">
               <span>Rank</span>
@@ -170,3 +172,5 @@ export default function Leaderboard() {
     </div>
   );
 }
+
+import React from 'react';

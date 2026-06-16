@@ -52,10 +52,12 @@ export default function Backtesting() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        {/* Configuration Panel */}
         <div className="space-y-4">
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 space-y-4">
             <h2 className="font-bold text-white">Configuration</h2>
 
+            {/* Symbol */}
             <div>
               <label className="text-sm text-gray-400 block mb-1.5">Symbol</label>
               <input
@@ -66,6 +68,7 @@ export default function Backtesting() {
               />
             </div>
 
+            {/* Strategy */}
             <div>
               <label className="text-sm text-gray-400 block mb-2">Strategy</label>
               <div className="grid grid-cols-1 gap-2">
@@ -89,6 +92,7 @@ export default function Backtesting() {
               </div>
             </div>
 
+            {/* Dates */}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-sm text-gray-400 block mb-1.5">Start Date</label>
@@ -102,6 +106,7 @@ export default function Backtesting() {
               </div>
             </div>
 
+            {/* Capital */}
             <div>
               <label className="text-sm text-gray-400 block mb-1.5">Starting Capital (USD)</label>
               <input type="number" value={capital} onChange={e => setCapital(Number(e.target.value))}
@@ -109,6 +114,7 @@ export default function Backtesting() {
                 className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-sm focus:border-violet-500 outline-none" />
             </div>
 
+            {/* Run Button */}
             <button
               onClick={() => runMutation.mutate()}
               disabled={runMutation.isPending}
@@ -120,6 +126,7 @@ export default function Backtesting() {
           </div>
         </div>
 
+        {/* Results Panel */}
         <div className="xl:col-span-2 space-y-4">
           {!results && !runMutation.isPending && (
             <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-12 text-center">
@@ -138,6 +145,7 @@ export default function Backtesting() {
 
           {results && (
             <>
+              {/* Summary */}
               <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="font-bold text-white">
@@ -157,11 +165,13 @@ export default function Backtesting() {
                 </div>
               </div>
 
+              {/* Equity Curve */}
               <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
                 <h3 className="font-bold text-white mb-4">Equity Curve</h3>
                 <PortfolioChart data={(results.equity_curve || []).map(d => ({ date: d.date, value: d.value }))} />
               </div>
 
+              {/* Trade Log */}
               {results.trades?.length > 0 && (
                 <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
                   <h3 className="font-bold text-white mb-4">Trade Log (Last 20)</h3>

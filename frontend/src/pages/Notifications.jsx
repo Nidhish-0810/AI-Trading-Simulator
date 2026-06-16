@@ -67,6 +67,7 @@ export default function Notifications() {
         )}
       </div>
 
+      {/* Tabs */}
       <div className="flex gap-2">
         {['notifications', 'alerts'].map(t => (
           <button key={t} onClick={() => setTab(t)}
@@ -81,6 +82,7 @@ export default function Notifications() {
         ))}
       </div>
 
+      {/* Notifications List */}
       {tab === 'notifications' && (
         <div className="space-y-2">
           {notifsLoading ? (
@@ -106,8 +108,10 @@ export default function Notifications() {
         </div>
       )}
 
+      {/* Price Alerts */}
       {tab === 'alerts' && (
         <div className="space-y-4">
+          {/* Create Alert Form */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
             <h2 className="font-bold text-white mb-4 flex items-center gap-2">
               <Plus className="w-4 h-4" /> Create Price Alert
@@ -144,6 +148,7 @@ export default function Notifications() {
             </button>
           </div>
 
+          {/* Alert List */}
           <div className="space-y-2">
             {alertsLoading ? (
               Array.from({length: 3}).map((_,i) => <Skeleton key={i} className="h-16 rounded-xl" />)

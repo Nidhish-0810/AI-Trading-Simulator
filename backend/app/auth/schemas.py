@@ -9,7 +9,9 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
+# ─── Request Schemas ─────────────────────────────────────────────────────────
 class UserCreate(BaseModel):
+    """Schema for user registration."""
     email: EmailStr
     username: str = Field(min_length=3, max_length=50, pattern=r"^[a-zA-Z0-9_-]+$")
     password: str = Field(min_length=8, max_length=128)
@@ -34,27 +36,34 @@ class UserCreate(BaseModel):
 
 
 class UserLogin(BaseModel):
+    """Schema for login request."""
     email: EmailStr
     password: str
 
 
 class RefreshTokenRequest(BaseModel):
+    """Schema for token refresh."""
     refresh_token: str
 
 
 class UpdateProfileRequest(BaseModel):
+    """Schema for profile update."""
     full_name: Optional[str] = Field(None, max_length=100)
     bio: Optional[str] = Field(None, max_length=500)
     avatar_url: Optional[str] = Field(None, max_length=500)
 
 
 class ChangePasswordRequest(BaseModel):
+    """Schema for password change."""
     current_password: str
     new_password: str = Field(min_length=8, max_length=128)
 
 
+# ─── Response Schemas ────────────────────────────────────────────────────────
 class UserResponse(BaseModel):
+    """Public user data returned in API responses."""
     model_config = ConfigDict(from_attributes=True)
+
     id: uuid.UUID
     email: str
     username: str
@@ -68,7 +77,9 @@ class UserResponse(BaseModel):
 
 
 class UserProfile(BaseModel):
+    """Extended user profile with stats."""
     model_config = ConfigDict(from_attributes=True)
+
     id: uuid.UUID
     email: str
     username: str
@@ -78,6 +89,8 @@ class UserProfile(BaseModel):
     balance: Decimal
     is_active: bool
     created_at: datetime
+
+    # Stats (computed, not from DB)
     portfolio_value: float = 0.0
     total_invested: float = 0.0
     total_return: float = 0.0
@@ -90,20 +103,25 @@ class UserProfile(BaseModel):
 
 
 class TokenResponse(BaseModel):
+    """JWT token pair returned on login/refresh."""
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
-    expires_in: int
+    expires_in: int  # seconds until access token expires
     user: UserResponse
 
 
 class PublicUserProfile(BaseModel):
+    """Minimal public profile (for leaderboard, social features)."""
     model_config = ConfigDict(from_attributes=True)
+
     id: uuid.UUID
     username: str
     full_name: Optional[str]
     avatar_url: Optional[str]
     created_at: datetime
+
+    # Public stats
     total_return_pct: float = 0.0
     total_trades: int = 0
     rank: Optional[int] = None

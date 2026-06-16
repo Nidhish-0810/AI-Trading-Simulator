@@ -1,3 +1,8 @@
+/**
+ * Utility functions for formatting prices, percentages, and numbers.
+ */
+
+/** Format a number as USD currency */
 export const formatPrice = (value, decimals = 2) => {
   if (value == null || isNaN(value)) return '$0.00';
   return new Intl.NumberFormat('en-US', {
@@ -8,12 +13,14 @@ export const formatPrice = (value, decimals = 2) => {
   }).format(value);
 };
 
+/** Format a percentage change */
 export const formatPercent = (value, decimals = 2) => {
   if (value == null || isNaN(value)) return '0.00%';
   const formatted = Math.abs(value).toFixed(decimals);
   return `${value >= 0 ? '+' : '-'}${formatted}%`;
 };
 
+/** Format large numbers (K, M, B, T) */
 export const formatNumber = (value) => {
   if (value == null || isNaN(value)) return '0';
   const abs = Math.abs(value);
@@ -24,25 +31,30 @@ export const formatNumber = (value) => {
   return value.toFixed(0);
 };
 
+/** Format volume */
 export const formatVolume = (value) => formatNumber(value);
 
+/** Format market cap */
 export const formatMarketCap = (value) => {
   if (!value) return 'N/A';
   return formatNumber(value);
 };
 
+/** Get Tailwind color class based on value sign */
 export const getChangeColor = (value) => {
   if (value > 0) return 'text-emerald-400';
   if (value < 0) return 'text-red-400';
   return 'text-gray-400';
 };
 
+/** Get gain/loss CSS color hex */
 export const getChangeHex = (value) => {
   if (value > 0) return '#00d4aa';
   if (value < 0) return '#ff4757';
   return '#6b7280';
 };
 
+/** Format signal color */
 export const getSignalColor = (signal) => {
   const map = {
     STRONG_BUY: '#00d4aa',
@@ -54,6 +66,7 @@ export const getSignalColor = (signal) => {
   return map[signal] || '#6b7280';
 };
 
+/** Format date */
 export const formatDate = (value) => {
   if (!value) return '';
   return new Date(value).toLocaleDateString('en-US', {
@@ -61,6 +74,7 @@ export const formatDate = (value) => {
   });
 };
 
+/** Format date + time */
 export const formatDateTime = (value) => {
   if (!value) return '';
   return new Date(value).toLocaleString('en-US', {
@@ -68,8 +82,10 @@ export const formatDateTime = (value) => {
   });
 };
 
+/** Clamp a value between min and max */
 export const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+/** Get sector badge color */
 export const getSectorColor = (sector) => {
   const map = {
     Technology: 'bg-violet-500/20 text-violet-300 border-violet-500/30',

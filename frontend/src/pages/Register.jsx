@@ -70,6 +70,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] flex">
+      {/* Left: Perks */}
       <div className="hidden lg:flex flex-1 flex-col justify-center px-12 bg-gradient-to-br from-violet-900/10 to-cyan-900/10 border-r border-white/5 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-violet-600/10 rounded-full blur-[100px]" />
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-cyan-600/10 rounded-full blur-[80px]" />
@@ -101,6 +102,7 @@ export default function Register() {
         </div>
       </div>
 
+      {/* Right: Form */}
       <div className="flex-1 flex items-center justify-center px-8 py-12">
         <motion.div
           initial={{ opacity: 0, x: 30 }}

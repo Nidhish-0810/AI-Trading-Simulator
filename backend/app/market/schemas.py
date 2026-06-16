@@ -1,12 +1,16 @@
 """
 Pydantic v2 schemas for market data endpoints.
 """
+
 from datetime import datetime
 from typing import List, Optional
+
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class OHLCVBar(BaseModel):
+    """Single OHLCV candlestick bar."""
+
     date: str
     open: float
     high: float
@@ -16,6 +20,8 @@ class OHLCVBar(BaseModel):
 
 
 class StockQuote(BaseModel):
+    """Full real-time quote for a single ticker symbol."""
+
     symbol: str
     name: str = ""
     price: float
@@ -42,6 +48,8 @@ class StockQuote(BaseModel):
 
 
 class StockHistory(BaseModel):
+    """Historical OHLCV data for a ticker."""
+
     symbol: str
     period: str
     interval: str
@@ -49,6 +57,8 @@ class StockHistory(BaseModel):
 
 
 class StockSearch(BaseModel):
+    """Lightweight result item for stock search queries."""
+
     symbol: str
     name: str
     exchange: str = ""
@@ -57,6 +67,8 @@ class StockSearch(BaseModel):
 
 
 class MarketIndex(BaseModel):
+    """Snapshot of a major market index."""
+
     symbol: str
     name: str
     price: float
@@ -66,11 +78,15 @@ class MarketIndex(BaseModel):
 
 
 class MarketSummary(BaseModel):
+    """Collection of major market indices for the dashboard."""
+
     indices: List[MarketIndex]
     timestamp: datetime
 
 
 class NewsItem(BaseModel):
+    """Single news article related to a stock or market."""
+
     title: str
     url: str = ""
     source: str = ""
@@ -80,7 +96,10 @@ class NewsItem(BaseModel):
 
 
 class WatchlistItemResponse(BaseModel):
+    """Watchlist entry with live quote data."""
+
     model_config = ConfigDict(from_attributes=True)
+
     symbol: str
     added_at: datetime
     quote: Optional[StockQuote] = None

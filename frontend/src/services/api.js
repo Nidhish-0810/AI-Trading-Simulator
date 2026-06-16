@@ -11,6 +11,7 @@ const api = axios.create({
   },
 })
 
+// Request interceptor: attach Bearer token
 api.interceptors.request.use(
   (config) => {
     const token = useAuthStore.getState().accessToken
@@ -22,6 +23,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
+// Response interceptor: handle 401 + token refresh
 let isRefreshing = false
 let failedQueue = []
 
@@ -72,6 +74,7 @@ api.interceptors.response.use(
       }
     }
 
+    // Format error message
     if (error.response) {
       const msg = error.response.data?.detail || error.response.data?.message || `Error ${error.response.status}`
       error.message = msg

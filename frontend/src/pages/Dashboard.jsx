@@ -69,6 +69,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-black text-white">
@@ -82,6 +83,7 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard
           label="Portfolio Value"
@@ -119,6 +121,7 @@ export default function Dashboard() {
         />
       </div>
 
+      {/* Portfolio Chart */}
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-white">Portfolio Performance</h2>
@@ -133,7 +136,9 @@ export default function Dashboard() {
         )}
       </div>
 
+      {/* Holdings + Trending */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        {/* Holdings */}
         <div className="xl:col-span-2 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
           <h2 className="text-lg font-bold text-white mb-4">Your Holdings</h2>
           {portfolioLoading ? (
@@ -145,6 +150,7 @@ export default function Dashboard() {
           )}
         </div>
 
+        {/* Top Movers */}
         <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
           <h2 className="text-lg font-bold text-white mb-4">Top Movers</h2>
           <div className="space-y-3">

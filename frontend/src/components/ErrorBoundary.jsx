@@ -1,6 +1,10 @@
 import { Component } from 'react'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 
+/**
+ * React Error Boundary — catches render errors in child components
+ * and shows a friendly fallback UI instead of crashing the whole page.
+ */
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props)

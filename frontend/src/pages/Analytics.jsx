@@ -59,6 +59,7 @@ export default function Analytics() {
         <p className="text-gray-500 text-sm">Advanced portfolio performance metrics</p>
       </div>
 
+      {/* Key Metrics Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {isLoading ? (
           Array.from({length: 6}).map((_,i) => <Skeleton key={i} className="h-28 rounded-2xl" />)
@@ -66,7 +67,7 @@ export default function Analytics() {
           <>
             <MetricCard label="Sharpe Ratio" value={(a.sharpe_ratio ?? 0).toFixed(3)}
               sub="Risk-adjusted return" color="bg-violet-600/60"
-              icon={Award} description=">1.0 is good, >2.0 is excellent" />
+              icon={Award} description="&gt;1.0 is good, &gt;2.0 is excellent" />
             <MetricCard label="Beta" value={(a.beta ?? 0).toFixed(3)}
               sub="vs S&P 500" color="bg-blue-600/60"
               icon={Activity} description="1.0 = market avg volatility" />
@@ -78,7 +79,7 @@ export default function Analytics() {
               icon={AlertTriangle} description="Lower is better" />
             <MetricCard label="Win Rate" value={`${(a.win_rate ?? 0).toFixed(1)}%`}
               sub="% of profitable trades" color="bg-amber-600/60"
-              icon={Target} description=">50% is profitable" />
+              icon={Target} description="&gt;50% is profitable" />
             <MetricCard label="Volatility" value={`${(a.volatility ?? 0).toFixed(1)}%`}
               sub="Annualized std deviation" color="bg-pink-600/60"
               icon={BarChart2} description="Lower = less risk" />
@@ -86,6 +87,7 @@ export default function Analytics() {
         )}
       </div>
 
+      {/* Risk Profile */}
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
         <h2 className="text-lg font-bold text-white mb-5">Risk Profile</h2>
         {isLoading ? <Skeleton className="h-32" /> : (
@@ -104,6 +106,7 @@ export default function Analytics() {
         )}
       </div>
 
+      {/* Portfolio vs Market Comparison */}
       <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-white">Portfolio Performance</h2>
@@ -115,6 +118,7 @@ export default function Analytics() {
         <PortfolioChart data={history?.history || []} showBenchmark />
       </div>
 
+      {/* Trade Statistics */}
       {!isLoading && a.best_trades && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">

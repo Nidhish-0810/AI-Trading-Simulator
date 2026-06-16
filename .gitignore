@@ -64,6 +64,10 @@ redis_data/
 *.db
 *.sqlite3
 
+# ── Alembic ──────────────────────────────────────────────────────────────────
+# Keep versions but ignore pycache inside
+backend/alembic/versions/__pycache__/
+
 # ── OS / Editor ───────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
@@ -73,6 +77,14 @@ Desktop.ini
 *.swp
 *.swo
 *~
+.project
+.classpath
+.settings/
+
+# ── IDE / Tools ───────────────────────────────────────────────────────────────
+*.iml
+.gradle/
+*.class
 
 # ── SSL Certs ─────────────────────────────────────────────────────────────────
 nginx/ssl/

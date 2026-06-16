@@ -32,12 +32,14 @@ const TICKER_STOCKS = [
 export default function Landing() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
+      {/* Animated gradient background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[120px]" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-600/5 rounded-full blur-[150px]" />
       </div>
 
+      {/* Navbar */}
       <nav className="relative z-10 border-b border-white/5 backdrop-blur-xl bg-black/20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -62,6 +64,7 @@ export default function Landing() {
         </div>
       </nav>
 
+      {/* Ticker Tape */}
       <div className="relative z-10 border-b border-white/5 bg-black/20 overflow-hidden py-2">
         <div className="flex animate-[ticker_30s_linear_infinite] whitespace-nowrap">
           {[...TICKER_STOCKS, ...TICKER_STOCKS].map((stock, i) => (
@@ -77,6 +80,7 @@ export default function Landing() {
         </div>
       </div>
 
+      {/* Hero Section */}
       <section className="relative z-10 pt-24 pb-20 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <motion.div
@@ -135,12 +139,14 @@ export default function Landing() {
           </motion.div>
         </div>
 
+        {/* Hero visual — animated dashboard preview */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
           className="max-w-5xl mx-auto mt-20 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/50"
         >
+          {/* Fake dashboard header */}
           <div className="border-b border-white/10 px-6 py-4 flex items-center gap-3">
             <div className="flex gap-1.5">
               <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -149,6 +155,7 @@ export default function Landing() {
             </div>
             <span className="text-sm text-gray-400 font-mono">tradeai — Dashboard</span>
           </div>
+          {/* Fake stat cards */}
           <div className="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { label: 'Portfolio Value', value: '$112,847.32', change: '+12.85%', up: true },
@@ -165,6 +172,7 @@ export default function Landing() {
               </div>
             ))}
           </div>
+          {/* Fake chart area */}
           <div className="px-6 pb-6">
             <div className="rounded-xl border border-white/10 bg-white/5 h-40 flex items-end px-4 pb-4 gap-1">
               {[40, 55, 48, 62, 58, 72, 68, 80, 75, 88, 82, 95, 90, 98, 94, 102, 97, 108].map((h, i) => (
@@ -183,6 +191,7 @@ export default function Landing() {
         </motion.div>
       </section>
 
+      {/* Stats Bar */}
       <section className="relative z-10 py-10 border-y border-white/5 bg-white/2">
         <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
           {STATS.map((stat, i) => (
@@ -202,6 +211,7 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Features Grid */}
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -240,6 +250,7 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* CTA Section */}
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
@@ -262,6 +273,7 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 py-8 px-6 text-center text-gray-600 text-sm">
         <p>© 2024 TradeAI. Built with FastAPI, React, and real market data. For educational purposes only.</p>
       </footer>

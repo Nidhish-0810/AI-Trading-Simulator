@@ -1,4 +1,10 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# TradeAI — render.yaml
+# Deploys all services to Render.com (free tier compatible)
+# ─────────────────────────────────────────────────────────────────────────────
+
 services:
+  # ── FastAPI Backend ─────────────────────────────────────────────────────────
   - type: web
     name: tradeai-backend
     runtime: docker
@@ -36,6 +42,7 @@ services:
       - key: COMMISSION_RATE
         value: "0.001"
 
+  # ── React Frontend ──────────────────────────────────────────────────────────
   - type: web
     name: tradeai-frontend
     runtime: docker
@@ -43,15 +50,21 @@ services:
     dockerContext: ./frontend
     region: oregon
     plan: free
+    buildCommand: ""
     envVars:
       - key: VITE_API_URL
         value: https://tradeai-backend.onrender.com
       - key: VITE_WS_URL
         value: wss://tradeai-backend.onrender.com
 
+# ── PostgreSQL Database ─────────────────────────────────────────────────────
 databases:
   - name: tradeai-postgres
     plan: free
     region: oregon
     databaseName: tradeai_db
     user: tradeai
+
+# ── Redis Cache ─────────────────────────────────────────────────────────────
+# Note: Add Redis as a separate service in Render dashboard
+# Free tier uses Upstash Redis or similar

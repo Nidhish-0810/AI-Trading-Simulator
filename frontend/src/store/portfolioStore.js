@@ -78,14 +78,15 @@ export const usePortfolioStore = create(
       }))
     },
 
+    // Mock data for demo
     loadDemoData: () => {
       const holdings = [
-        { symbol: 'AAPL', company: 'Apple Inc.', quantity: 10, avg_cost: 165.0, current_price: 189.50, current_value: 1895.0, cost_basis: 1650.0, day_change: 2.30, day_change_pct: 1.23, sector: 'Technology' },
-        { symbol: 'MSFT', company: 'Microsoft Corp.', quantity: 5, avg_cost: 380.0, current_price: 415.20, current_value: 2076.0, cost_basis: 1900.0, day_change: -3.10, day_change_pct: -0.74, sector: 'Technology' },
-        { symbol: 'GOOGL', company: 'Alphabet Inc.', quantity: 8, avg_cost: 155.0, current_price: 171.30, current_value: 1370.4, cost_basis: 1240.0, day_change: 1.80, day_change_pct: 1.06, sector: 'Communication' },
-        { symbol: 'NVDA', company: 'NVIDIA Corp.', quantity: 12, avg_cost: 680.0, current_price: 875.60, current_value: 10507.2, cost_basis: 8160.0, day_change: 15.40, day_change_pct: 1.79, sector: 'Technology' },
-        { symbol: 'TSLA', company: 'Tesla Inc.', quantity: 20, avg_cost: 220.0, current_price: 185.30, current_value: 3706.0, cost_basis: 4400.0, day_change: -4.20, day_change_pct: -2.22, sector: 'Consumer Discretionary' },
-        { symbol: 'AMZN', company: 'Amazon.com Inc.', quantity: 6, avg_cost: 178.0, current_price: 197.80, current_value: 1186.8, cost_basis: 1068.0, day_change: 2.50, day_change_pct: 1.28, sector: 'Consumer Discretionary' },
+        { symbol: 'AAPL', company: 'Apple Inc.', quantity: 10, avg_cost: 165.0, current_price: 189.50, current_value: 1895.0, cost_basis: 165.0, day_change: 2.30, day_change_pct: 1.23, sector: 'Technology' },
+        { symbol: 'MSFT', company: 'Microsoft Corp.', quantity: 5, avg_cost: 380.0, current_price: 415.20, current_value: 2076.0, cost_basis: 380.0, day_change: -3.10, day_change_pct: -0.74, sector: 'Technology' },
+        { symbol: 'GOOGL', company: 'Alphabet Inc.', quantity: 8, avg_cost: 155.0, current_price: 171.30, current_value: 1370.4, cost_basis: 155.0, day_change: 1.80, day_change_pct: 1.06, sector: 'Communication' },
+        { symbol: 'NVDA', company: 'NVIDIA Corp.', quantity: 12, avg_cost: 680.0, current_price: 875.60, current_value: 10507.2, cost_basis: 680.0, day_change: 15.40, day_change_pct: 1.79, sector: 'Technology' },
+        { symbol: 'TSLA', company: 'Tesla Inc.', quantity: 20, avg_cost: 220.0, current_price: 185.30, current_value: 3706.0, cost_basis: 220.0, day_change: -4.20, day_change_pct: -2.22, sector: 'Consumer Discretionary' },
+        { symbol: 'AMZN', company: 'Amazon.com Inc.', quantity: 6, avg_cost: 178.0, current_price: 197.80, current_value: 1186.8, cost_basis: 178.0, day_change: 2.50, day_change_pct: 1.28, sector: 'Consumer Discretionary' },
       ]
       const cash_balance = 73580.50
       get().setPortfolio({ holdings, cash_balance, history: generateDemoHistory() })

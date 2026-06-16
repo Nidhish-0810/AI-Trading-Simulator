@@ -1,58 +1,111 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  db:
-    image: postgres:15-alpine
+  # ─── PostgreSQL Database ───────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: tradeai_postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: ai_trading_user
-      POSTGRES_PASSWORD: ai_trading_password
-      POSTGRES_DB: ai_trading_db
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${POSTGRES_USER:-tradeai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tradeai_secret_2024}
+      POSTGRES_DB: ${POSTGRES_DB:-tradeai_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ai_trading_user -d ai_trading_db"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tradeai} -d ${POSTGRES_DB:-tradeai_db}"]
+      interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - tradeai_network
 
+  # ─── Redis Cache & Pub/Sub ────────────────────────────────────────────────
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
+    container_name: tradeai_redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-redis_secret_2024} --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
-    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis_secret_2024}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tradeai_network
 
+  # ─── FastAPI Backend ──────────────────────────────────────────────────────
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tradeai_backend
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      DEBUG: ${DEBUG:-true}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-at-least-32-characters-long}
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      REFRESH_TOKEN_EXPIRE_DAYS: 7
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-tradeai}:${POSTGRES_PASSWORD:-tradeai_secret_2024}@postgres:5432/${POSTGRES_DB:-tradeai_db}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-redis_secret_2024}@redis:6379/0
+      CORS_ORIGINS: "http://localhost:3000,http://localhost:80,http://localhost"
+      STARTING_BALANCE: "100000.0"
+      COMMISSION_RATE: "0.001"
     ports:
       - "8000:8000"
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://ai_trading_user:ai_trading_password@db:5432/ai_trading_db
-      - REDIS_URL=redis://redis:6379/0
-      - SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
-      - ALGORITHM=HS256
-      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
-      - ENVIRONMENT=dev
-      - STARTING_BALANCE=100000.0
-      - CORS_ORIGINS=["http://localhost:5173", "http://localhost"]
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - ./backend:/app
+    command: >
+      sh -c "echo 'Waiting for database...' &&
+             until alembic upgrade head; do
+               echo 'Migration failed, retrying in 3s...';
+               sleep 3;
+             done &&
+             echo 'Migrations complete. Starting server...' &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - tradeai_network
 
+  # ─── React Frontend ───────────────────────────────────────────────────────
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tradeai_frontend
+    restart: unless-stopped
     ports:
-      - "80:80"
+      - "3000:80"
     depends_on:
       - backend
+    networks:
+      - tradeai_network
 
 volumes:
   postgres_data:
+    driver: local
   redis_data:
+    driver: local
+
+networks:
+  tradeai_network:
+    driver: bridge

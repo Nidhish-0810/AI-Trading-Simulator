@@ -82,7 +82,9 @@ export default function StockDetail() {
 
   return (
     <div className="flex gap-6 h-full">
+      {/* Main Content */}
       <div className="flex-1 min-w-0 space-y-4">
+        {/* Header */}
         <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
           {quoteLoading ? (
             <Skeleton className="h-24" />
@@ -118,6 +120,7 @@ export default function StockDetail() {
                 </button>
               </div>
 
+              {/* Key Stats */}
               <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mt-4">
                 {[
                   { label: 'Market Cap', value: formatMarketCap(quote?.market_cap) },
@@ -137,6 +140,7 @@ export default function StockDetail() {
           )}
         </div>
 
+        {/* Tabs */}
         <div className="flex gap-2">
           {TABS.map(({ id, label, Icon }) => (
             <button
@@ -154,6 +158,7 @@ export default function StockDetail() {
           ))}
         </div>
 
+        {/* Tab Content */}
         <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5">
           {tab === 'chart' && (
             <>
@@ -207,6 +212,7 @@ export default function StockDetail() {
         </div>
       </div>
 
+      {/* Trading Panel Sidebar */}
       <div className="hidden xl:block w-80 flex-shrink-0">
         <div className="sticky top-6">
           <TradingPanel symbol={symbol} currentPrice={price} />

@@ -34,6 +34,7 @@ export function useWebSocket() {
         setWsStatus('connected')
         reconnectCount.current = 0
 
+        // Subscribe to all symbols in the store
         const subs = useMarketStore.getState().subscriptions
         if (subs.size > 0) {
           ws.send(JSON.stringify({ type: 'subscribe', symbols: [...subs] }))
@@ -105,6 +106,7 @@ export function useWebSocket() {
 
   useEffect(() => {
     isMounted.current = true
+    // For demo mode, simulate price updates without real WS
     const authData = localStorage.getItem('tradeai-auth')
     let isDemo = false
     try {
@@ -114,6 +116,7 @@ export function useWebSocket() {
 
     if (isDemo) {
       setWsStatus('connected')
+      // Simulate live price updates
       const interval = setInterval(() => {
         if (!isMounted.current) return
         const state = useMarketStore.getState()

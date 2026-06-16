@@ -54,11 +54,13 @@ export default function Markets() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div>
         <h1 className="text-2xl font-black text-white">Markets</h1>
         <p className="text-gray-500 text-sm mt-0.5">Real-time stock data • 15-min delayed</p>
       </div>
 
+      {/* Market Summary Indices */}
       <div className="flex gap-3 overflow-x-auto pb-2">
         {summary ? (
           Object.entries(summary).map(([name, data]) => (
@@ -69,6 +71,7 @@ export default function Markets() {
         )}
       </div>
 
+      {/* Search + Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -92,6 +95,7 @@ export default function Markets() {
         </select>
       </div>
 
+      {/* Filter Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto">
         {FILTER_TABS.map(tab => (
           <button
@@ -111,6 +115,7 @@ export default function Markets() {
         ))}
       </div>
 
+      {/* Sector Pills */}
       <div className="flex gap-2 overflow-x-auto">
         {SECTORS.map(s => (
           <button
@@ -127,6 +132,7 @@ export default function Markets() {
         ))}
       </div>
 
+      {/* Stock Grid */}
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {Array.from({length: 12}).map((_, i) => (

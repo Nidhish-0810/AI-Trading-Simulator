@@ -24,12 +24,14 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] flex">
+      {/* Left: Form */}
       <div className="flex-1 flex items-center justify-center px-8 py-12">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           className="w-full max-w-md"
         >
+          {/* Logo */}
           <Link to="/" className="flex items-center gap-2 mb-10">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
               <Activity className="w-5 h-5 text-white" />
@@ -43,6 +45,7 @@ export default function Login() {
           <p className="text-gray-500 mb-8">Sign in to your trading account</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-2">Email</label>
               <div className="relative">
@@ -58,6 +61,7 @@ export default function Login() {
               </div>
             </div>
 
+            {/* Password */}
             <div>
               <div className="flex justify-between mb-2">
                 <label className="text-sm font-medium text-gray-400">Password</label>
@@ -102,6 +106,7 @@ export default function Login() {
         </motion.div>
       </div>
 
+      {/* Right: Visual */}
       <div className="hidden lg:flex flex-1 items-center justify-center bg-gradient-to-br from-violet-900/20 to-cyan-900/20 border-l border-white/5 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-64 h-64 bg-violet-600/20 rounded-full blur-[80px]" />

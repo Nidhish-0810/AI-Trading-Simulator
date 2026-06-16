@@ -99,6 +99,7 @@ export const useAuthStore = create(
 
       clearError: () => set({ error: null }),
 
+      // Demo login for quick access
       demoLogin: () => {
         set({
           user: {
