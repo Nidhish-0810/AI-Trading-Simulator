@@ -1,6 +1,7 @@
 """
 TradeAI — FastAPI Application Entry Point
 """
+import asyncio
 import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
@@ -15,7 +16,10 @@ from slowapi.errors import RateLimitExceeded
 from app.core.config import settings
 from app.core.database import create_tables
 from app.core.redis_client import get_redis_pool, close_redis_pool
-from app.core.exceptions import (NotFoundError, UnauthorizedError, InsufficientFundsError, InsufficientSharesError, InvalidOrderError)
+from app.core.exceptions import (
+    NotFoundError, UnauthorizedError, InsufficientFundsError,
+    InsufficientSharesError, InvalidOrderError
+)
 
 from app.auth.router import router as auth_router
 from app.market.router import router as market_router
@@ -27,26 +31,36 @@ from app.leaderboard.router import router as leaderboard_router
 from app.websocket.router import router as websocket_router
 
 logger = logging.getLogger(__name__)
+
 limiter = Limiter(key_func=get_remote_address)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator:
-    logger.info("Starting TradeAI backend...")
+    logger.info("🚀 Starting TradeAI backend...")
     await create_tables()
     await get_redis_pool()
-    logger.info(f"TradeAI running in {settings.ENVIRONMENT} mode")
+    logger.info("✅ Database tables created")
+    logger.info("✅ Redis connection established")
+    logger.info(f"✅ TradeAI running in {settings.ENVIRONMENT} mode")
     yield
-    logger.info("Shutting down TradeAI backend...")
+    logger.info("🛑 Shutting down TradeAI backend...")
     await close_redis_pool()
+    logger.info("✅ Redis connection closed")
 
 
 app = FastAPI(
     title="TradeAI — AI-Powered Stock Trading Simulator",
-    description="Full-stack trading simulator with real market data, AI signals, and portfolio analytics.",
+    description="""
+## TradeAI REST API
+
+A production-grade stock trading simulator with real market data, AI signals, 
+advanced order execution, portfolio analytics, and gamification.
+    """,
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
+    openapi_url="/openapi.json",
     lifespan=lifespan,
 )
 
@@ -66,21 +80,26 @@ app.add_middleware(
 async def not_found_handler(request: Request, exc: NotFoundError) -> JSONResponse:
     return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"detail": str(exc), "error": "NOT_FOUND"})
 
+
 @app.exception_handler(UnauthorizedError)
 async def unauthorized_handler(request: Request, exc: UnauthorizedError) -> JSONResponse:
     return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"detail": str(exc), "error": "UNAUTHORIZED"})
+
 
 @app.exception_handler(InsufficientFundsError)
 async def insufficient_funds_handler(request: Request, exc: InsufficientFundsError) -> JSONResponse:
     return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"detail": str(exc), "error": "INSUFFICIENT_FUNDS"})
 
+
 @app.exception_handler(InsufficientSharesError)
 async def insufficient_shares_handler(request: Request, exc: InsufficientSharesError) -> JSONResponse:
     return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={"detail": str(exc), "error": "INSUFFICIENT_SHARES"})
 
+
 @app.exception_handler(InvalidOrderError)
 async def invalid_order_handler(request: Request, exc: InvalidOrderError) -> JSONResponse:
     return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, content={"detail": str(exc), "error": "INVALID_ORDER"})
+
 
 @app.exception_handler(Exception)
 async def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
@@ -101,6 +120,7 @@ app.include_router(websocket_router, tags=["WebSocket"])
 @app.get("/health", tags=["Health"])
 async def health_check() -> dict:
     return {"status": "healthy", "service": "tradeai-backend", "version": "1.0.0", "environment": settings.ENVIRONMENT}
+
 
 @app.get("/", tags=["Root"])
 async def root() -> dict:
