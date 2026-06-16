@@ -32,7 +32,7 @@ async def test_register_duplicate_email(client: AsyncClient, test_user):
         }
     )
     assert response.status_code == 409
-    assert 'newuser@test.com' in response.json().get("detail", "")
+    assert 'already registered' in response.json().get("detail", "")
 
 async def test_login_success(client: AsyncClient, test_user):
     response = await client.post(

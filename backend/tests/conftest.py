@@ -103,6 +103,7 @@ def patch_yfinance(monkeypatch):
         def __init__(self, symbol):
             self.symbol = symbol
             self.info = {'regularMarketPrice': 150.0, 'regularMarketPreviousClose': 148.0, 'volume': 1000000, 'marketCap': 2000000000}
+            self.fast_info = {'last_price': 150.0}
         def history(self, *args, **kwargs):
             import pandas as pd
             return pd.DataFrame({'Close': [150.0]})
