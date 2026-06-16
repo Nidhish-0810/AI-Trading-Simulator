@@ -2,93 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg-primary:    #0a0a0f;
-  --bg-secondary:  #0d0d20;
-  --bg-tertiary:   #12122a;
-  --bg-card:       rgba(255,255,255,0.03);
-  --bg-card-hover: rgba(255,255,255,0.06);
-
-  --text-primary:   #f0f0f8;
-  --text-secondary: #9090b0;
-
-  --color-gain:   #00d4aa;
-  --color-loss:   #ff4757;
-  --color-gold:   #f59e0b;
-  --color-accent: #7c3aed;
-  --color-brand:  #00d4aa;
-
-  --shadow-card: 0 4px 24px rgba(0,0,0,0.35);
-  --shadow-glass: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
-
-  --radius-card: 1rem;
-}
-
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-  }
   body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: 'Inter', system-ui, sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
+    @apply bg-[#0a0a0f] text-white antialiased selection:bg-violet-500/30;
   }
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 999px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
-  * { @apply border-white/10; }
-  h1, h2, h3, h4, h5, h6 { font-family: 'Inter', sans-serif; font-weight: 700; color: var(--text-primary); }
-  input, textarea, select { outline: none; }
 }
 
-@layer components {
-  .glass-card {
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-glass);
-  }
-  .glass-dark {
-    background: rgba(13,13,32,0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-glass);
-  }
-  .glass-hover { transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1); }
-  .glass-hover:hover {
-    background: rgba(255,255,255,0.06);
-    border-color: rgba(255,255,255,0.14);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
-    transform: translateY(-2px);
-  }
-  .gradient-text {
-    background: linear-gradient(135deg, #7c3aed 0%, #00d4aa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .font-price { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
-  .btn-base { @apply inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 cursor-pointer select-none; }
-  .btn-primary { @apply btn-base text-white; background: linear-gradient(135deg, #6d28d9, #00d4aa); box-shadow: 0 0 20px rgba(124,58,237,0.3); }
-  .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
-  .btn-secondary { @apply btn-base glass-card text-white/90; }
-  .btn-secondary:hover { background: rgba(255,255,255,0.08); transform: translateY(-1px); }
-  .input-dark { @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 transition-all duration-200; }
-  .input-dark:focus { border-color: rgba(0,212,170,0.5); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(0,212,170,0.1); }
-  .stat-card { @apply glass-card p-5 flex flex-col gap-3 transition-all duration-250; }
-  .stat-card:hover { border-color: rgba(255,255,255,0.14); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-  .badge-gain { @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold; background: rgba(0,212,170,0.15); color: #00d4aa; border: 1px solid rgba(0,212,170,0.25); }
-  .badge-loss { @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold; background: rgba(255,71,87,0.15); color: #ff4757; border: 1px solid rgba(255,71,87,0.25); }
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-@layer utilities {
-  .text-gain { color: #00d4aa; }
-  .text-loss { color: #ff4757; }
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+}
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
