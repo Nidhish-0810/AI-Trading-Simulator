@@ -1,0 +1,6 @@
+- [🏠 Home](Home)
+- [🏗 Architecture](Architecture)
+- [⚙️ Setup & Installation](Setup-and-Installation)
+- [📈 Trading Engine](Trading-Engine)
+- [🤖 AI Features](AI-Features)
+- [🔄 CI/CD Pipeline](CI-CD-Pipeline)
