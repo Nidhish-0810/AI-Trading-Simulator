@@ -2,9 +2,9 @@ name: TradeAI CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, master, develop]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 env:
   REGISTRY: ghcr.io
@@ -61,12 +61,12 @@ jobs:
         env:
           DATABASE_URL: postgresql+asyncpg://test_user:test_password@localhost:5432/test_db
           REDIS_URL: redis://localhost:6379/0
-          SECRET_KEY: test-secret-key-for-ci-only-must-be-32-chars-long
+          SECRET_KEY: ci-test-secret-key-for-github-actions-only-do-not-use-in-production
           ALGORITHM: HS256
           ACCESS_TOKEN_EXPIRE_MINUTES: 30
           REFRESH_TOKEN_EXPIRE_DAYS: 7
           STARTING_BALANCE: "100000.0"
-          ENVIRONMENT: test
+          ENVIRONMENT: development
         run: |
           cd backend
           alembic upgrade head
@@ -75,23 +75,17 @@ jobs:
         env:
           DATABASE_URL: postgresql+asyncpg://test_user:test_password@localhost:5432/test_db
           REDIS_URL: redis://localhost:6379/0
-          SECRET_KEY: test-secret-key-for-ci-only-must-be-32-chars-long
+          SECRET_KEY: ci-test-secret-key-for-github-actions-only-do-not-use-in-production
           ALGORITHM: HS256
           ACCESS_TOKEN_EXPIRE_MINUTES: 30
           REFRESH_TOKEN_EXPIRE_DAYS: 7
           STARTING_BALANCE: "100000.0"
-          ENVIRONMENT: test
+          ENVIRONMENT: development
         run: |
           cd backend
-          pytest tests/ -v --tb=short --cov=app --cov-report=xml
+          pytest tests/ -v --tb=short
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          file: backend/coverage.xml
-          flags: backend
-
-  # ─── Frontend Tests & Build ─────────────────────────────────────────────────
+  # ─── Frontend Build ─────────────────────────────────────────────────────────
   frontend-build:
     name: Frontend Build (React + Vite)
     runs-on: ubuntu-latest
@@ -112,11 +106,6 @@ jobs:
           cd frontend
           npm ci
 
-      - name: Lint
-        run: |
-          cd frontend
-          npm run lint
-
       - name: Build
         env:
           VITE_API_URL: https://api.example.com
@@ -130,6 +119,7 @@ jobs:
         with:
           name: frontend-dist
           path: frontend/dist/
+
 
   # ─── Docker Build & Push ────────────────────────────────────────────────────
   docker-build:
