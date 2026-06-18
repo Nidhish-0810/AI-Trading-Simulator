@@ -83,7 +83,7 @@ jobs:
           ENVIRONMENT: development
         run: |
           cd backend
-          pytest tests/ -v --tb=short
+          PYTHONPATH=. pytest tests/ -v --tb=short
 
   # ─── Frontend Build ─────────────────────────────────────────────────────────
   frontend-build:
