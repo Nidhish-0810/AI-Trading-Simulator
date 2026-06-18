@@ -53,11 +53,11 @@ jobs:
           cache-dependency-path: backend/requirements.txt
 
       - name: Install dependencies
-        run: |
-          cd backend
-          pip install -r requirements.txt
+        working-directory: backend
+        run: pip install -r requirements.txt
 
       - name: Run Alembic migrations
+        working-directory: backend
         env:
           DATABASE_URL: postgresql+asyncpg://test_user:test_password@localhost:5432/test_db
           REDIS_URL: redis://localhost:6379/0
@@ -67,11 +67,10 @@ jobs:
           REFRESH_TOKEN_EXPIRE_DAYS: 7
           STARTING_BALANCE: "100000.0"
           ENVIRONMENT: development
-        run: |
-          cd backend
-          alembic upgrade head
+        run: alembic upgrade head
 
       - name: Run tests with pytest
+        working-directory: backend
         env:
           DATABASE_URL: postgresql+asyncpg://test_user:test_password@localhost:5432/test_db
           REDIS_URL: redis://localhost:6379/0
@@ -81,9 +80,8 @@ jobs:
           REFRESH_TOKEN_EXPIRE_DAYS: 7
           STARTING_BALANCE: "100000.0"
           ENVIRONMENT: development
-        run: |
-          cd backend
-          PYTHONPATH=. pytest tests/ -v --tb=short
+          PYTHONPATH: .
+        run: python -m pytest tests/ -v --tb=short
 
   # ─── Frontend Build ─────────────────────────────────────────────────────────
   frontend-build:
